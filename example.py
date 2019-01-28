@@ -41,7 +41,7 @@ def house(**kwargs):
     # else:
     #     out("There is nothing special here.")
     out("What would you like to do?")
-    return choice(house,[
+    return choice([
         ('o', 'Go Outside', outside),
         ('g', 'Go to Garage', garage),
         ('b', 'Go to Basement', basement),
@@ -68,7 +68,7 @@ def outside(**kwargs):
     
 def garage(**kwargs):
     out("You are in the Garage. You see a Car.")
-    return choice(garage,[
+    return choice([
         ('c', 'Get in Car', car),
         ('h', 'Go inside House', house),
     ])

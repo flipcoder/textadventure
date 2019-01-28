@@ -83,7 +83,7 @@ def colorize(msg):
 def out(msg):
     print(colorize(msg))
 
-def choice(room, choices):
+def choice(choices):
     choices += CHOICES
     for ch in choices:
         col = color_of(ch[1])
@@ -104,7 +104,7 @@ def start(start):
         clear()
         back = last_room
         last_room = room
-        room = room(back=back)
+        room = room(back=back, location=room)
         if isinstance(room,tuple):
             args = room[1]
             room = room[0]
