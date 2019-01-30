@@ -18,7 +18,7 @@ room = None
 RESET = BG.RESET + FG.RESET
 CHOICES = []
 
-suffixes = '.?!'
+suffixes = '.?!,;:)]'
 
 def choices(ch):
     global CHOICES
@@ -44,7 +44,7 @@ def color_of(msg):
                 if words[i].endswith(suf):
                     suffix = suf + suffix
                     words[i] = words[i][:-1]
-                    cont = repeat
+                    repeat = True
                     break
             if repeat:
                 continue
@@ -62,6 +62,7 @@ def colorize(msg):
     msg = ''
     for i in range(len(words)):
         suffix = ''
+        col = ''
         repeat = False
         while True:
             for suf in suffixes:
@@ -74,10 +75,13 @@ def colorize(msg):
                 continue
             break
             
+        word = words[i]
         try:
-            words[i] = COLORS[words[i]] + words[i] + RESET + suffix
-        except KeyError: 
-            words[i] = words[i] + suffix
+            word = COLORS[words[i]] + words[i] + RESET
+        except KeyError:
+            pass
+        word = word.replace('_', ' ')
+        words[i] = word + suffix
     return ' '.join(words)
 
 def out(msg):
@@ -118,4 +122,11 @@ def back(args, **kwargs):
         return (args.get('back'), kwargs)
     else:
         return args.get('back')
+
+def pause(msg=None): 
+    if msg==None:
+        print("Press ENTER to continue...")
+        input()
+        return
+    input(msg)
 

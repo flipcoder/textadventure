@@ -11,8 +11,8 @@ colors(
 )
 
 def welcome(**kwargs):
-    out("Welcome! Press ENTER to continue!")
-    input()
+    out("Welcome!\n")
+    pause()
     return house
 
 def use(**kwargs):
