@@ -20,7 +20,7 @@ def use(**kwargs):
     clear()
     item = input('Which item? ')
     input()
-    return (back(kwargs), {use: item})
+    return (back(kwargs), {'use': item})
 
 basement_locked = True
 def basement(**kwargs):
