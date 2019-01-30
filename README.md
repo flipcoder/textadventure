@@ -6,7 +6,7 @@ Licensed under MIT License
 
 ![screenshot](https://imgur.com/9tOCdR4l.png)
 
-A VERY minimal text adventure template for python, inspired by the way I programmed
+A minimal text adventure library for python, based on the way I programmed
 them when I was a kid.
 
 Each location is represented as a function.  You return another function to
