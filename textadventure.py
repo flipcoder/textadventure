@@ -36,7 +36,7 @@ def clear():
 
 # take an entire message and extract the first automatic color, or return RESET
 def color_of(msg):
-    words = msg.split() # break our message into words
+    words = msg.split(' ') # break our message into words
     msg = ''
     for i in range(len(words)):
         suffix = ''
@@ -61,36 +61,55 @@ def color_of(msg):
 
 # auto-colorize words based on colors()
 def colorize(msg):
-    words = msg.split() # break our message into words
-    msg = ''
-    for i in range(len(words)):
-        suffix = ''
-        col = ''
-        repeat = False
-        while True:
-            # don't include certain symbols (periods, commas, etc.) as part of word
-            for suf in suffixes:
-                if words[i].endswith(suf):
-                    suffix = suf + suffix # append suffix to our combined suffix string
-                    words[i] = words[i][:-1] # cut suffix symbol from word
-                    cont = repeat
+    lines = msg.splitlines()
+    
+    trailing_eol = ''
+    if msg and msg[-1]=='\n':
+        trailing_eol = '\n'
+    
+    for line in lines:
+        eols = 0
+        if line.endswith('\n'):
+            # count line endings which split gets rid of
+            eols = 0
+            for count in range(1,len(line)):
+                if line[-count]!='\n':
                     break
-            if repeat: # allow more than one suffix symbol (ex. '...')
-                continue
-            break
-            
-        word = words[i]
-        try:
-            word = COLORS[words[i]] + words[i] + RESET
-        except KeyError:
-            pass
-        word = word.replace('_', ' ')
-        words[i] = word + suffix # put the non-colored suffix string back on the word
-    return ' '.join(words)
+                eols += 1
+            print(eols)
+            line = line[:-eols]
+        words = line.split() # break our message into words
+        msg = ''
+        for i in range(len(words)):
+            suffix = ''
+            col = ''
+            repeat = False
+            while True:
+                # don't include certain symbols (periods, commas, etc.) as part of word
+                for suf in suffixes:
+                    if words[i].endswith(suf):
+                        suffix = suf + suffix # append suffix to our combined suffix string
+                        words[i] = words[i][:-1] # cut suffix symbol from word
+                        cont = repeat
+                        break
+                if repeat: # allow more than one suffix symbol (ex. '...')
+                    continue
+                break
+                
+            word = words[i]
+            try:
+                word = COLORS[words[i]] + words[i] + RESET
+            except KeyError:
+                pass
+            word = word.replace('_', ' ')
+            words[i] = word + suffix # put the non-colored suffix string back on the word
+        line = ' '.join(words) + eols*'\n' # add line endings
+    return '\n'.join(lines) + trailing_eol
 
 # print with colorization
-def out(msg):
-    print(colorize(msg))
+def out(*msg):
+    for line in msg:
+        print(colorize(line))
 
 # a colorized choice menu
 def choice(choices):
@@ -121,6 +140,7 @@ def start(room):
 
         # call the current room function
         args['back'] = back
+        # TODO: detect if room is a string name instead of function
         args['room'] = room
         room = room(**args)
 
